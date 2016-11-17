@@ -90,6 +90,54 @@ class SupervisorController extends Controller
 
         return $this->redirect($this->generateUrl('supervisor'));
     }
+	
+	/**
+     * signalProcessAction
+     *
+     * @param string  $start id or name of signal (9 or TERM, for example) to start, 0 to stop it
+     * @param string  $key   The key to retrieve a Supervisor object
+     * @param string  $name  The name of a process
+     * @param string  $group The group of a process
+     * @param Request $request
+     *
+     * @return Symfony\Component\HttpFoundation\Response represents an HTTP response.
+     * @throws \Exception
+     */
+    public function signalProcessAction($signal, $key, $name, $group, Request $request)
+    {
+        $supervisor = $this->get('supervisor.manager')->getSupervisorByKey($key);
+
+        if (!$supervisor) {
+            throw new \Exception('Supervisor not found');
+        }
+
+        $process = $supervisor->getProcessByNameAndGroup($name, $group);
+        try {
+            $process->signalProcess($signal);
+        } catch (\Exception $e) {
+            $success = false;
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('process.stop.error', array(), 'YZSupervisorBundle')
+            );
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            $processInfo = $process->getProcessInfo();
+            $res = json_encode([
+                'success'       => $success,
+                'message'       => implode(', ', $this->get('session')->getFlashBag()->get('error', array())),
+                'processInfo'   => $processInfo
+            ]);
+
+            return new Response($res, 200, [
+                'Content-Type' => 'application/json',
+                'Cache-Control' => 'no-store',
+            ]);
+        }
+
+        return $this->redirect($this->generateUrl('supervisor'));
+    }
 
     /**
      * startStopAllProcessesAction
