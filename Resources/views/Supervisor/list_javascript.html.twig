@@ -10,7 +10,7 @@
         });
 
         // use ajax to start/stop process. wait 1,2 sec then refresh row
-        $('.process-control > a').click(function (e){
+        $('.process-control > a.start-stop').click(function (e){
             e.preventDefault();
             var $this = $(this);
             var process = $(this).parents('.process');
@@ -23,6 +23,39 @@
 
             process.data('control', false).removeClass('success danger').addClass('warning');
             $('.process-statename', process).text(started ? '{{ "stopping"|trans }}' : '{{ "starting"|trans }}').removeClass('label-success label-danger').addClass('label-warning');
+            $this.addClass('disabled');
+
+            $.get($this.attr('href'), function (r) {
+                if (!r.success) {
+                    $this.tooltip({
+                        title: r.message,
+                        trigger: 'manual',
+                        container: 'body',
+                        placement: 'left'
+                    }).tooltip('show');
+                    setTimeout(function () {
+                        $this.tooltip('hide');
+                    }, 2000);
+                }
+                setTimeout(function() {
+                    update(process);
+                }, 1200);
+            });
+        });
+
+        // use ajax to start/stop process. wait 1,2 sec then refresh row
+        $('.process-control > a.signal').click(function (e){
+            e.preventDefault();
+            var $this = $(this);
+            var process = $(this).parents('.process');
+
+            if (process.data('control') === false || $this.hasClass('disabled')) {
+                console.log('Action canceled');
+                return;
+            }
+
+            process.data('control', false).removeClass('success danger').addClass('warning');
+            $('.process-statename', process).text('{{ "signaling"|trans }}').removeClass('label-success label-danger').addClass('label-warning');
             $this.addClass('disabled');
 
             $.get($this.attr('href'), function (r) {
@@ -100,7 +133,7 @@
         function display(process, response) {
             var started = response.processInfo.state == 10 || response.processInfo.state == 20;
             $('.process-statename', process).text(response.processInfo.statename).removeClass('label-success label-danger label-warning').addClass(started ? 'label-success' : 'label-danger');
-            $('.process-control a', process).text(started ? '{{ "stop"|trans }}' : '{{ "start"|trans }}').removeClass('btn-success btn-danger disabled').addClass(started ? 'btn-danger' : 'btn-success').attr('href', response.controlLink);
+            $('.process-control a.start-stop', process).text(started ? '{{ "stop"|trans }}' : '{{ "start"|trans }}').removeClass('btn-success btn-danger disabled').addClass(started ? 'btn-danger' : 'btn-success').attr('href', response.controlLink);
             $('.process-description', process).text(response.processInfo.description);
             process.data('control', true).data('started', started).removeClass('success danger warning').addClass(started ? 'success' : 'danger');
         }

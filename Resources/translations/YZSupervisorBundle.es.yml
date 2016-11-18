@@ -8,4 +8,20 @@ loading: Cargando ...
 stop.all: Para todo
 start.all: Empezar todo
 version.api: Api
-version.supervisor: Version
+version.supervisor: Versión
+log.empty: Este archivo de logs está vacío
+start: Iniciar
+stop: Detener
+information: Mostrar info
+information.empty: No hay información disponible
+server.up: Arriba
+server.down: Abajo
+header.status: Estado
+header.process: Proceso
+header.actions: Acciones
+starting: INICIANDO...
+stopping: DETENIENDO...
+process.stop.error: Este proceso no pudo ser detenido.
+process.start.error: Este proceso no pudo ser iniciado.
+logs.delete.error: Los logs no pudieron ser eliminados.
+signal: Señal

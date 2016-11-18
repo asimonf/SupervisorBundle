@@ -42,22 +42,22 @@
                                 <td class="col-lg-4 align-right">
                                     <div class="btn-group process-control">
                                         {% if processInfos.state == 10 or  processInfos.state == 20 %}
-                                            <a href="{{ path('supervisor.process.startStop', { 'key':supervisor.key, 'name':process.name, 'group':process.group, 'start': 0 }) }}" class="btn btn-danger btn-small">{{ "stop"|trans }}</a>
+                                            <a href="{{ path('supervisor.process.startStop', { 'key':supervisor.key, 'name':process.name, 'group':process.group, 'start': 0 }) }}" class="btn btn-danger btn-small start-stop">{{ "stop"|trans }}</a>
                                         {% else %}
-                                            <a href="{{ path('supervisor.process.startStop', { 'key':supervisor.key, 'name':process.name, 'group':process.group, 'start': 1 }) }}" class="btn btn-success btn-small">{{ "start"|trans }}</a>
+                                            <a href="{{ path('supervisor.process.startStop', { 'key':supervisor.key, 'name':process.name, 'group':process.group, 'start': 1 }) }}" class="btn btn-success btn-small start-stop">{{ "start"|trans }}</a>
                                         {% endif %}
 
                                         <div class="btn-group" role="group">
                                             <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Signal
+                                                {{ "signal"|trans }}
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="{{ path('supervisor.process.signalProcess', { 'key':supervisor.key, 'name':process.name, 'group':process.group, 'signal': 'TERM' }) }}">SIGTERM</a></li>
-                                                <li><a href="{{ path('supervisor.process.signalProcess', { 'key':supervisor.key, 'name':process.name, 'group':process.group, 'signal': 'INT' }) }}">SIGINT</a></li>
-                                                <li><a href="{{ path('supervisor.process.signalProcess', { 'key':supervisor.key, 'name':process.name, 'group':process.group, 'signal': 'QUIT' }) }}">SIGQUIT</a></li>
-                                                <li><a href="{{ path('supervisor.process.signalProcess', { 'key':supervisor.key, 'name':process.name, 'group':process.group, 'signal': 'HUP' }) }}">SIGHUP</a></li>
-                                                <li><a href="{{ path('supervisor.process.signalProcess', { 'key':supervisor.key, 'name':process.name, 'group':process.group, 'signal': 'USR2' }) }}">SIGUSR2</a></li>
+                                                <li><a class="signal" href="{{ path('supervisor.process.signalProcess', { 'key':supervisor.key, 'name':process.name, 'group':process.group, 'signal': 'TERM' }) }}">SIGTERM</a></li>
+                                                <li><a class="signal" href="{{ path('supervisor.process.signalProcess', { 'key':supervisor.key, 'name':process.name, 'group':process.group, 'signal': 'QUIT' }) }}">SIGQUIT</a></li>
+                                                <li><a class="signal" href="{{ path('supervisor.process.signalProcess', { 'key':supervisor.key, 'name':process.name, 'group':process.group, 'signal': 'HUP' }) }}">SIGHUP</a></li>
+                                                <li><a class="signal" href="{{ path('supervisor.process.signalProcess', { 'key':supervisor.key, 'name':process.name, 'group':process.group, 'signal': 'USR2' }) }}">SIGUSR2</a></li>
+                                                <li><a class="signal" href="{{ path('supervisor.process.signalProcess', { 'key':supervisor.key, 'name':process.name, 'group':process.group, 'signal': 'INT' }) }}">SIGINT</a></li>
                                             </ul>
                                         </div>
                                     </div>

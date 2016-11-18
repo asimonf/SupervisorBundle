@@ -24,3 +24,4 @@ stopping: STOPPING...
 process.stop.error: The process could not be stopped.
 process.start.error: The process could not be started.
 logs.delete.error: The logs could not be deleted.
+signal: Signal
